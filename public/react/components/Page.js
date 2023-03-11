@@ -1,11 +1,21 @@
 import React from "react";
-import { setSlug } from "./App";
+import apiURL from "../api";
 
 export const Page = (props) => {
-  page = props.page;
+  async function fetchDetail() {
+    try {
+      const res = await fetch(apiURL + "/wiki/" + props.page.slug);
+      const detailsData = await res.json();
+      props.setDetail(detailsData);
+    } catch (err) {
+      console.log("Oh no an error! ", err);
+    }
+  }
+
   return (
     <>
-      <h3 onClick={() => setSlug(page.slug)}>{page.title}</h3>
+      <h3 onClick={fetchDetail}>{props.page.title}</h3>
+      {/* {details && <Detail page={details} />} */}
       {/* <h3>{page.title}</h3> */}
     </>
   );
